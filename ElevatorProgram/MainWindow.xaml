@@ -1,0 +1,96 @@
+﻿<Window x:Class="ElevatorProgram.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ElevatorProgram"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="650" Width="1000">
+    <Window.Resources>
+
+        <Style TargetType="Image" x:Key="UpDownImageStyle">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="50"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.3" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Image" x:Key="PositionImageStyle">
+            <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <DataTemplate x:Key="MyTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" 
+                        Click="ButtonUp_Click" 
+                        CommandParameter="{Binding ButtonReference}"
+                        IsEnabled="{Binding ButtonUpIsEnable}">
+                    <Image Source="Resources/Up-icon.png" Style="{StaticResource UpDownImageStyle}"/>
+                </Button>
+                <Button Grid.Column="1" 
+                        Click="ButtonDown_Click"
+                        CommandParameter="{Binding ButtonReference}"
+                        IsEnabled="{Binding ButtonDownIsEnable}">
+                    <Image Source="Resources/Down-icon.png" Style="{StaticResource UpDownImageStyle}"/>
+                </Button>
+                <Rectangle Grid.Column="2" Fill="DeepSkyBlue" Margin="2"/>
+                <TextBlock Grid.Column="2" Text="{Binding FloorName}" FontSize="40" Margin="20,0,0,0"/>
+                <Image Grid.Column="2" 
+                       Source="Resources/OrangeIcon.png" 
+                       Style="{StaticResource PositionImageStyle}"
+                       IsEnabled="{Binding PositionIsEnable}"/>
+            </Grid>
+        </DataTemplate>
+
+
+
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+
+        <Style TargetType="Image">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <ItemsControl ItemsSource="{Binding Elevators[0].Floors}" 
+                 ItemTemplate="{StaticResource MyTemplate}">
+        </ItemsControl>
+
+        <ItemsControl Grid.Column="2" ItemsSource="{Binding Elevators[1].Floors}" 
+                 ItemTemplate="{StaticResource MyTemplate}">
+        </ItemsControl>
+
+        <ItemsControl Grid.Column="4" ItemsSource="{Binding Elevators[2].Floors}" 
+                 ItemTemplate="{StaticResource MyTemplate}">
+        </ItemsControl>
+
+    </Grid>
+</Window>
